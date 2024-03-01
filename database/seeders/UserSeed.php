@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\{Hash};
+
 
 class UserSeed extends Seeder
 {
@@ -14,20 +16,28 @@ class UserSeed extends Seeder
      */
     public function run()
     {
-        /* factory(User::class, 1)->states('admin')->create([
-            'name'  => 'Administrador',
-            'email' => 'admin@teste.com.br',
-            'phone' => '(62) 99999-0000',
-            'cpf'   => '99193133197',
-        ]);
 
-        factory(User::class, 1)->states('user')->create([
-            'name'  => 'Usuario Teste',
-            'email' => 'user@teste.com.br',
-            'phone' => '(62) 00000-0000',
-            'cpf'   => '21429528109',
-        ]);
+        $user = [
+            [
+                'name' => 'Administrador',
+                'email' => 'admin@teste.com.br',
+                'phone' => '62999990000',
+                'cpf' => '99193133197',
+                'role' => 2,
+                'password' => Hash::make('secret'),
+            ],
+            [
+                'name' => 'Usuário',
+                'email' => 'user@teste.com.br',
+                'phone' => '62999990000',
+                'cpf' => '21429528109',
+                'role' => 1,
+                'password' => Hash::make('secret'),
+            ],
+        ];
 
-        factory(User::class, 50)->states('user')->create(); */
+        User::insert($user);
+
+        User::factory()->count(50)->create();
     }
 }

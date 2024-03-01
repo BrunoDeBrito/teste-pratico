@@ -51,8 +51,8 @@ class VehiclesController extends Controller
 
         $data = [
             'vehicles' => $vehicles,
-            'users' => $users,
-            'years' => $years,
+            'users'    => $users,
+            'years'    => $years,
         ];
 
         return view('vehicles.admin.create-edit', $data);
@@ -70,11 +70,11 @@ class VehiclesController extends Controller
 
             DB::beginTransaction();
 
-            $vehicles->plate = strtoupper(strtolower($request->plate));
+            $vehicles->plate   = strtoupper(strtolower($request->plate));
             $vehicles->renavam = $request->renavam;
-            $vehicles->model = ucwords(strtolower($request->model));
-            $vehicles->brand = ucwords(strtolower($request->brand));
-            $vehicles->year = $request->year;
+            $vehicles->model   = ucwords(strtolower($request->model));
+            $vehicles->brand   = ucwords(strtolower($request->brand));
+            $vehicles->year    = $request->year;
             $vehicles->user_id = $request->user_id;
 
             $vehicles->save();
@@ -99,12 +99,12 @@ class VehiclesController extends Controller
     private function validator($request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'nullable|numeric|required_if:_method,PUT',
-            'plate' => 'required|string|max:9|unique:vehicles,plate' . ($request->id ? (',' . $request->id) : ''),
+            'id'      => 'nullable|numeric|required_if:_method,PUT',
+            'plate'   => 'required|string|max:9|unique:vehicles,plate' . ($request->id ? (',' . $request->id) : ''),
             'renavam' => 'required|string|max:11|unique:vehicles,renavam' . ($request->id ? (',' . $request->id) : ''),
-            'model' => 'required|string|max:50',
-            'brand' => 'required|string|max:50',
-            'year' => 'required|numeric',
+            'model'   => 'required|string|max:50',
+            'brand'   => 'required|string|max:50',
+            'year'    => 'required|numeric',
         ]);
 
         return $validator;
@@ -125,7 +125,7 @@ class VehiclesController extends Controller
 
         $data = [
             'vehicles' => $vehicles,
-            'user' => $user,
+            'user'     => $user,
         ];
 
         return view('vehicles.index', $data);

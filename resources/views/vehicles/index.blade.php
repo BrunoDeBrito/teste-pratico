@@ -34,7 +34,7 @@
                 </select>
             </div> --}}
         </div>
-    </form>
+</form>
 
     @if ($vehicles->count() > 0)
         <div class="table-responsive">
