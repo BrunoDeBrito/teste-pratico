@@ -40,7 +40,8 @@ class Vehicles extends Model
         $query->select(
             'vehicles.*',
             'users.id as user_id',
-            'users.name as user_name'
+            'users.name as user_name',
+            'users.mail as user_mail',
         )
             ->join('users', 'vehicles.user_id', 'users.id')
         ->where('vehicles.id', $id);

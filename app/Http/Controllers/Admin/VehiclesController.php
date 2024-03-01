@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\{User, Vehicles};
+use App\Notifications\CustomerNotification;
 use Auth;
 use DB;
 use Exception;
@@ -234,6 +235,10 @@ class VehiclesController extends Controller
 
                     $this->save($request, $vehicles);
 
+                    $sendNotify = Vehicles::getUserVehicles($vehicles->user_id)->first();
+
+                    new CustomerNotification($sendNotify->user_name, $vehicles->mail, "Veiculo Alterado", "O veiculo " . $vehicles->plate . " foi alterado com sucesso!");
+
                     return redirect('vehicles')
                         ->withSuccess('Veiculo alterada com sucesso!');
 
@@ -271,6 +276,10 @@ class VehiclesController extends Controller
             $vehicles = Vehicles::find($request->id);
 
             if ($vehicles) {
+
+                $sendNotify = Vehicles::getUserVehicles($vehicles->user_id)->first();
+
+                new CustomerNotification($sendNotify->user_name, $vehicles->mail, "Veiculo Removido", "O veiculo " . $vehicles->plate . " foi removido com sucesso!");
 
                 $vehicles->delete();
 

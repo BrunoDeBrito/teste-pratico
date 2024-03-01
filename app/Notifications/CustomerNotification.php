@@ -50,9 +50,9 @@ class CustomerNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage())
-                               ->from($this->fromEmail, $this->fromName)
-                               ->subject($this->subject)
-                               ->line($this->message);
+            ->from($this->fromEmail, $this->fromName)
+            ->subject($this->subject)
+        ->line($this->message);
     }
 
     /**

@@ -22,7 +22,7 @@ class MyResetPasswordNotification extends ResetPassword
             ->action('Reset Password', url(config('app.url') . route('password.reset', $this->token, false)))
             ->line(trans('email.notaction'))
             ->subject(trans('email.subject'))
-            ->salutation(trans('email.salutation'));
+        ->salutation(trans('email.salutation'));
     }
 
 }
