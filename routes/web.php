@@ -33,8 +33,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/vehicles', [VehiclesController::class, 'insert']);
     Route::get('/vehicles/{id}/edit', [VehiclesController::class, 'edit']);
     Route::put('/vehicles', [VehiclesController::class, 'update']);
-    Route::delete('/vehicles', [VehiclesController::class, 'delete']);
-
-    // });
+    Route::delete('/vehicles/{id}', [VehiclesController::class, 'delete']);
 
 });

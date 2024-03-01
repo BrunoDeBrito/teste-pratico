@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\{User, Vehicles};
+use Auth;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -11,12 +12,29 @@ use Illuminate\Support\Facades\Validator;
 
 class VehiclesController extends Controller
 {
+    private function isAdmin()
+    {
+
+        $user = Auth::user();
+
+        if ($user->role == User::ROLE_ADMIN) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     /**
      * ANCHOR Carrega as informações para apresentação do formulário
      *
      */
     private function form($request, $vehicles)
     {
+
+        if (!$this->isAdmin()) {
+            return redirect('vehicles')->withErrors('Você não tem permissão para acessar esta página!');
+        }
 
         $users = User::orderBy('name', 'asc')->get();
 
@@ -33,8 +51,8 @@ class VehiclesController extends Controller
 
         $data = [
             'vehicles' => $vehicles,
-            'users'    => $users,
-            'years'    => $years,
+            'users' => $users,
+            'years' => $years,
         ];
 
         return view('vehicles.admin.create-edit', $data);
@@ -52,11 +70,11 @@ class VehiclesController extends Controller
 
             DB::beginTransaction();
 
-            $vehicles->plate   = strtoupper(strtolower($request->plate));
+            $vehicles->plate = strtoupper(strtolower($request->plate));
             $vehicles->renavam = $request->renavam;
-            $vehicles->model   = ucwords(strtolower($request->model));
-            $vehicles->brand   = ucwords(strtolower($request->brand));
-            $vehicles->year    = $request->year;
+            $vehicles->model = ucwords(strtolower($request->model));
+            $vehicles->brand = ucwords(strtolower($request->brand));
+            $vehicles->year = $request->year;
             $vehicles->user_id = $request->user_id;
 
             $vehicles->save();
@@ -81,12 +99,12 @@ class VehiclesController extends Controller
     private function validator($request)
     {
         $validator = Validator::make($request->all(), [
-            'id'      => 'nullable|numeric|required_if:_method,PUT',
-            'plate'   => 'required|string|max:9|unique:vehicles,plate' . ($request->id ? (',' . $request->id) : ''),
+            'id' => 'nullable|numeric|required_if:_method,PUT',
+            'plate' => 'required|string|max:9|unique:vehicles,plate' . ($request->id ? (',' . $request->id) : ''),
             'renavam' => 'required|string|max:11|unique:vehicles,renavam' . ($request->id ? (',' . $request->id) : ''),
-            'model'   => 'required|string|max:50',
-            'brand'   => 'required|string|max:50',
-            'year'    => 'required|numeric',
+            'model' => 'required|string|max:50',
+            'brand' => 'required|string|max:50',
+            'year' => 'required|numeric',
         ]);
 
         return $validator;
@@ -100,10 +118,17 @@ class VehiclesController extends Controller
     public function index(Request $request)
     {
 
+        $user = Auth::user();
+
         $vehicles = Vehicles::search($request->search)
             ->get();
 
-        return view('vehicles.index', ['vehicles' => $vehicles]);
+        $data = [
+            'vehicles' => $vehicles,
+            'user' => $user,
+        ];
+
+        return view('vehicles.index', $data);
     }
 
     /**
@@ -113,6 +138,11 @@ class VehiclesController extends Controller
      */
     public function create(Request $request)
     {
+
+        if (!$this->isAdmin()) {
+            return redirect('vehicles')->withErrors('Você não tem permissão para acessar esta página!');
+        }
+
         return $this->form($request, new Vehicles());
     }
 
@@ -125,6 +155,10 @@ class VehiclesController extends Controller
     {
 
         try {
+
+            if (!$this->isAdmin()) {
+                return redirect('vehicles')->withErrors('Você não tem permissão para acessar esta página!');
+            }
 
             //NOTE Realiza a validação dos dados enviados pelo formulário
             $validator = $this->validator($request);
@@ -157,6 +191,10 @@ class VehiclesController extends Controller
     public function edit(Request $request, $id)
     {
 
+        if (!$this->isAdmin()) {
+            return redirect('vehicles')->withErrors('Você não tem permissão para acessar esta página!');
+        }
+
         $vehicles = Vehicles::getUserVehicles($id)->first();
 
         if ($vehicles) {
@@ -181,6 +219,10 @@ class VehiclesController extends Controller
     {
 
         try {
+
+            if (!$this->isAdmin()) {
+                return redirect('vehicles')->withErrors('Você não tem permissão para acessar esta página!');
+            }
 
             $validator = $this->validator($request);
 
@@ -221,6 +263,10 @@ class VehiclesController extends Controller
     {
 
         try {
+
+            if (!$this->isAdmin()) {
+                return redirect('vehicles')->withErrors('Você não tem permissão para acessar esta página!');
+            }
 
             $vehicles = Vehicles::find($request->id);
 

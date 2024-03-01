@@ -20,7 +20,7 @@ class PermissionAdmin
     {
         if(Auth::user()->role != User::ROLE_ADMIN) {
 
-            return redirect('/home');
+            return redirect('/vehicles');
         }
 
         return $next($request);
