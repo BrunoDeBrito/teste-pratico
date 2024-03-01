@@ -14,7 +14,7 @@ class UserSeed extends Seeder
      */
     public function run()
     {
-        factory(User::class, 1)->states('admin')->create([
+        /* factory(User::class, 1)->states('admin')->create([
             'name'  => 'Administrador',
             'email' => 'admin@teste.com.br',
             'phone' => '(62) 99999-0000',
@@ -28,6 +28,6 @@ class UserSeed extends Seeder
             'cpf'   => '21429528109',
         ]);
 
-        factory(User::class, 50)->states('user')->create();
+        factory(User::class, 50)->states('user')->create(); */
     }
 }

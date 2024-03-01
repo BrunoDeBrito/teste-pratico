@@ -14,8 +14,20 @@ class CreateVehiclesTable extends Migration
     public function up()
     {
         Schema::create('vehicles', function (Blueprint $table) {
+
             $table->id();
+            $table->foreignId('user_id');
+
+            $table->string('plate', 9)->unique();
+            $table->string('renavam', 11)->unique();
+            $table->string('model', 100);
+            $table->string('brand', 150);
+            $table->string('year', 4);
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade');
         });
     }
 

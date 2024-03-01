@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\VehiclesController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +21,20 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => ['auth']], function () {
+
+    Route::get('/logout', 'Auth\LoginController@logout');
+
+    //Rota de vehicles
+    Route::get('/vehicles', [VehiclesController::class, 'index']);
+    Route::get('/vehicles/create', [VehiclesController::class, 'create']);
+    Route::post('/vehicles', [VehiclesController::class, 'insert']);
+    Route::get('/vehicles/{id}/edit', [VehiclesController::class, 'edit']);
+    Route::put('/vehicles', [VehiclesController::class, 'update']);
+    Route::delete('/vehicles', [VehiclesController::class, 'delete']);
+
+    // });
+
+});
