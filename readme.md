@@ -52,13 +52,13 @@ Existem dois tipos diferentes de usuários na aplicação:
 - Usuário
 
 ### Requisitos
-- [ ] Usar Laravel
-- [ ] Usar banco de dados Postgres
-- [ ] Utilizar Soft Deleting ao excluir veículos.
-- [ ] Não ter regra de negócio nos Controllers.
-- [ ] Usar Event e Notifications para enviar os e-mail.
-- [ ] Deixar informações no README.MD sobre como podemos executar sua aplicação.
-- [ ] Usar o github.
+- [x] Usar Laravel
+- [x] Usar banco de dados Postgres
+- [x] Utilizar Soft Deleting ao excluir veículos.
+- [x] Não ter regra de negócio nos Controllers.
+- [x] Usar Event e Notifications para enviar os e-mail.
+- [x] Deixar informações no README.MD sobre como podemos executar sua aplicação.
+- [x] Usar o github.
 
 ### Validações
 Os campos abaixo só podem ser aceitos no formato:
@@ -85,6 +85,3 @@ Entre em contato conosco, caso você tenha alguma dúvida ou quando terminar o p
 - Você tem 2 dias pra realizar esse teste prático.
 
 ## SUBMETA SEU PROJETO, MESMO QUE VOCÊ NÃO O TERMINE. NESTE CASO, NOS EXPLIQUE QUAIS FORAM AS SUAS DIFICULDADES. 
-
-
-

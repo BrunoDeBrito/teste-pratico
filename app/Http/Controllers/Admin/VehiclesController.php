@@ -37,7 +37,7 @@ class VehiclesController extends Controller
             return redirect('vehicles')->withErrors('Você não tem permissão para acessar esta página!');
         }
 
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::where('role', 1)->orderBy('name', 'asc')->get();
 
         $years = [];
 
@@ -101,11 +101,30 @@ class VehiclesController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id'      => 'nullable|numeric|required_if:_method,PUT',
+            'year'    => 'required|string|max:4',
             'plate'   => 'required|string|max:9|unique:vehicles,plate' . ($request->id ? (',' . $request->id) : ''),
-            'renavam' => 'required|string|max:11|unique:vehicles,renavam' . ($request->id ? (',' . $request->id) : ''),
-            'model'   => 'required|string|max:50',
             'brand'   => 'required|string|max:50',
-            'year'    => 'required|numeric',
+            'model'   => 'required|string|max:50',
+            'user_id' => 'required|numeric|exists:users,id',
+            'renavam' => 'required|string|max:11|unique:vehicles,renavam' . ($request->id ? (',' . $request->id) : ''),
+        ], [
+            'id.required'      => 'O campo id é obrigatório!',
+            'year.required'    => 'O campo ano é obrigatório!',
+            'year.max'         => 'O campo ano deve ter no máximo 4 caracteres!',
+            'plate.required'   => 'O campo placa é obrigatório!',
+            'plate.max'        => 'O campo placa deve ter no máximo 9 caracteres!',
+            'plate.unique'     => 'A placa informada já está cadastrada!',
+            'brand.required'   => 'O campo marca é obrigatório!',
+            'brand.max'        => 'O campo marca deve ter no máximo 50 caracteres!',
+            'model.required'   => 'O campo modelo é obrigatório!',
+            'model.max'        => 'O campo modelo deve ter no máximo 50 caracteres!',
+            'user_id.required' => 'O campo usuário é obrigatório!',
+            'user_id.numeric'  => 'O campo usuário deve ser um número!',
+            'user_id.exists'   => 'O usuário informado não está cadastrado!',
+            'renavam.required' => 'O campo renavam é obrigatório!',
+            'renavam.max'      => 'O campo renavam deve ter no máximo 11 caracteres!',
+            'renavam.unique'   => 'O renavam informado já está cadastrado!',
+
         ]);
 
         return $validator;
@@ -121,7 +140,7 @@ class VehiclesController extends Controller
 
         $user = Auth::user();
 
-        $vehicles = Vehicles::search($request->search)
+        $vehicles = Vehicles::search($request->search, $user)
             ->get();
 
         $data = [
@@ -173,9 +192,7 @@ class VehiclesController extends Controller
                     ->withSuccess('Veiculo cadastrado com sucesso!');
 
             } else {
-
                 return back()->withErrors($validator->errors()->first());
-
             }
         } catch (Exception $e) {
             return back()->withInput()->whithErrors('Não e possivel inserir o veiculo:' . $e->getMessage() . '.');
@@ -226,6 +243,7 @@ class VehiclesController extends Controller
             }
 
             $validator = $this->validator($request);
+            $user      = Auth::user();
 
             if (!$validator->fails()) {
 
@@ -235,9 +253,9 @@ class VehiclesController extends Controller
 
                     $this->save($request, $vehicles);
 
-                    $sendNotify = Vehicles::getUserVehicles($vehicles->user_id)->first();
+                    $sendNotify = Vehicles::getUserVehicles($vehicles->id)->first();
 
-                    new CustomerNotification($sendNotify->user_name, $vehicles->mail, "Veiculo Alterado", "O veiculo " . $vehicles->plate . " foi alterado com sucesso!");
+                    $user->notify(new CustomerNotification($sendNotify->user_name, $sendNotify->user_email, "Veiculo Alterado", "O veiculo " . $sendNotify->plate . " foi alterado com sucesso por " . $user->name));
 
                     return redirect('vehicles')
                         ->withSuccess('Veiculo alterada com sucesso!');
@@ -254,7 +272,7 @@ class VehiclesController extends Controller
             }
 
         } catch (Exception $e) {
-            return back()->withInput()->whithErrors('Não e possivel alterar o veiculo:' . $e->getMessage() . '.');
+            return back()->withInput()->withErrors('Não e possivel alterar o veiculo:' . $e->getMessage() . '.');
         }
 
     }
@@ -273,13 +291,15 @@ class VehiclesController extends Controller
                 return redirect('vehicles')->withErrors('Você não tem permissão para acessar esta página!');
             }
 
+            $user = Auth::user();
+
             $vehicles = Vehicles::find($request->id);
 
             if ($vehicles) {
 
-                $sendNotify = Vehicles::getUserVehicles($vehicles->user_id)->first();
+                $sendNotify = Vehicles::getUserVehicles($vehicles->id)->first();
 
-                new CustomerNotification($sendNotify->user_name, $vehicles->mail, "Veiculo Removido", "O veiculo " . $vehicles->plate . " foi removido com sucesso!");
+                $user->notify(new CustomerNotification($sendNotify->user_name, $sendNotify->user_email, "Veiculo Removido", "O veiculo " . $sendNotify->plate . " foi removido com sucesso por " . $user->name));
 
                 $vehicles->delete();
 

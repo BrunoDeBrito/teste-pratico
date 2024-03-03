@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\{Hash};
 
-
 class UserSeed extends Seeder
 {
     /**
@@ -19,19 +18,19 @@ class UserSeed extends Seeder
 
         $user = [
             [
-                'name' => 'Administrador',
-                'email' => 'admin@teste.com.br',
-                'phone' => '62999990000',
-                'cpf' => '99193133197',
-                'role' => 2,
+                'name'     => 'Administrador',
+                'email'    => 'admin@teste.com.br',
+                'phone'    => '62999990000',
+                'cpf'      => '99193133197',
+                'role'     => 2,
                 'password' => Hash::make('secret'),
             ],
             [
-                'name' => 'Usuário',
-                'email' => 'user@teste.com.br',
-                'phone' => '62999990000',
-                'cpf' => '21429528109',
-                'role' => 1,
+                'name'     => 'Usuário',
+                'email'    => 'user@teste.com.br',
+                'phone'    => '62999990000',
+                'cpf'      => '21429528109',
+                'role'     => 1,
                 'password' => Hash::make('secret'),
             ],
         ];

@@ -51,22 +51,15 @@
                             <div class="dropdown">
                                 <button class="btn btn-outline-info dropdown-toggle" type="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Dropdown button
+                                    {{ Auth::user()->name }}
                                 </button>
 
                                 <ul class="dropdown-menu">
-                                    <li class="dropdown-item">
-                                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
-                                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            v-pre>
-                                            {{ Auth::user()->name }} <span class="caret"></span>
-                                        </a>
-                                    </li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
-                                            {{ trans('auth.logout') }}
+                                            {{ trans('logout') }}
                                         </a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                             @csrf

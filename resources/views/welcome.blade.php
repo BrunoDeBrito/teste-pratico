@@ -439,7 +439,7 @@
                         <div class="ml-12">
                             <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm items-center">
                                 Veja a lista de veiculos cadastrados ->
-                                <strong><a class="btn btn-info" href="{{ route('vehicles.index') }}">Veiculos</a></strong>
+                                <strong><a class="btn btn-info" href="/vehicles">Veiculos</a></strong>
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\User;
+use App\Models\User;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +20,7 @@ class PermissionCustomer
     {
         if(Auth::user()->role != User::ROLE_USER) {
 
-            return redirect('/admin/home');
+            return redirect('/vehicles');
         }
 
         return $next($request);

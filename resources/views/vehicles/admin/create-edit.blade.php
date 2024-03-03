@@ -8,7 +8,7 @@
 
     @include('partials._alert')
 
-    <form action="{{ url('/veiculo') }}" method="POST">
+    <form action="{{ url('/vehicles') }}" method="POST">
 
         @csrf
         @method($vehicles->id ? 'PUT' : 'POST')
@@ -19,41 +19,45 @@
 
             <div class="col-6 mt-4">
                 <label for="plate" class="form-label">Placa da Veiculo</label>
-                <input type="text" class="form-control" required name="plate" id="plate"
+                <input type="text" class="form-control" required name="plate" id="plate" maxlength="9"
                     placeholder="Placa do veiculo" value="{{ old('plate', $vehicles->plate) }}">
             </div>
+
             <div class="col-6 mt-4">
                 <label for="renavam" class="form-label">Renavam da Veiculo</label>
-                <input type="text" class="form-control" required name="renavam" id="renavam"
+                <input type="text" class="form-control" required name="renavam" id="renavam" maxlength="11"
                     placeholder="Renavam do veiculo" value="{{ old('renavam', $vehicles->renavam) }}">
             </div>
+
             <div class="col-6 mt-4">
                 <label for="model" class="form-label">Modelo da Veiculo</label>
-                <input type="text" class="form-control" required name="model" id="model"
+                <input type="text" class="form-control" required name="model" id="model" max="90"
                     placeholder="Modelo do veiculo" value="{{ old('model', $vehicles->model) }}">
             </div>
             <div class="col-6 mt-4">
                 <label for="brand" class="form-label">Marca da Veiculo</label>
-                <input type="text" class="form-control" required name="brand" id="brand"
+                <input type="text" class="form-control" required name="brand" id="brand" maxlength="70"
                     placeholder="Marca do veiculo" value="{{ old('brand', $vehicles->brand) }}">
             </div>
+
             <div class="col-6 mt-4">
                 <label for="year" class="form-label">Ano da Veiculo</label>
-                <select class="form-select" required name="year" aria-label="Default select example">
+                <select class="form-select" required name="year" id="year" aria-label="Default select example">
                     <option selected>Selecione o Ano do seu veiculo</option>
                     @foreach ($years as $k => $value)
-                        <option value="{{ old('year', $vehicles->year) }}" {!! $k == $vehicles->year ? 'selected="selected"' : '' !!}>
+                        <option value="{{ old('year', $k) }}" {!! $k == $vehicles->year ? 'selected="selected"' : '' !!}>
                             {{ $value }}
                         </option>
                     @endforeach
                 </select>
             </div>
+
             <div class="col-6 mt-4">
                 <label for="user_id" class="form-label">Responsável</label>
-                <select class="form-select" required name="year" aria-label="Default select example">
+                <select class="form-select" required name="user_id" id="user_id" aria-label="Default select example">
                     <option selected>Selecione responsável pelo veiculo</option>
                     @foreach ($users as $item)
-                        <option value="{{ old('user_id', $vehicles->user_id) }}" {!! $item->name == $vehicles->user_name ? 'selected="selected"' : '' !!}>
+                        <option value="{{ old('user_id', $item->id) }}" {!! $item->name == $vehicles->user_name ? 'selected="selected"' : '' !!}>
                             {{ $item->name }}
                         </option>
                     @endforeach

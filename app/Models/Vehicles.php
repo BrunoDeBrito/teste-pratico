@@ -15,21 +15,27 @@ class Vehicles extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function scopeSearch($query, $search)
+    public function scopeSearch($query, $search, $user)
     {
         $query->select(
             'vehicles.*',
             'users.id as user_id',
             'users.name as user_name'
         )
-            ->join('users', 'vehicles.user_id', 'users.id');
+
+            ->join('users', 'vehicles.user_id', 'users.id')
+            ->orderBy('vehicles.id', 'desc');
 
         if ($search && isset($search)) {
-            $query = $query->where('name', 'like', '%' . $search . '%')
+            $query = $query->where('plate', 'like', '%' . $search . '%')
                 ->orWhere('brand', 'like', '%' . $search . '%')
+                ->orWhere('renavam', 'like', '%' . $search . '%')
                 ->orWhere('model', 'like', '%' . $search . '%')
-                ->orWhere('year', 'like', '%' . $search . '%')
-                ->orWhere('plate', 'like', '%' . $search . '%');
+            ->orWhere('year', 'like', '%' . $search . '%');
+        }
+
+        if ($user->role != User::ROLE_ADMIN) {
+            $query = $query->where('vehicles.user_id', $user->id);
         }
 
         return $query;
@@ -41,10 +47,10 @@ class Vehicles extends Model
             'vehicles.*',
             'users.id as user_id',
             'users.name as user_name',
-            'users.mail as user_mail',
+            'users.email as user_email',
         )
             ->join('users', 'vehicles.user_id', 'users.id')
-        ->where('vehicles.id', $id);
+            ->where('vehicles.id', $id);
 
         return $query;
     }
