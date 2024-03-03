@@ -67,7 +67,7 @@
         </div>
 
         <div class="main-controls text-right mt-4">
-            <a class="btn btn-light" href="{{ url('vehicles') }}">Voltar</a>
+            <a class="btn btn-outline-secondary" href="{{ url('vehicles') }}">Voltar</a>
             <button type="submit"
                 class="btn btn-{{ $vehicles->id ? 'primary' : 'success' }}">{{ $vehicles->id ? 'Alterar' : 'Cadastrar' }}</button>
         </div>

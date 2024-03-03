@@ -62,7 +62,7 @@
                             <td> {{ $item->renavam }} </td>
                             <td> {{ $item->model }} </td>
                             <td> {{ $item->brand }} </td>
-                            <td> <a class="btn btn-outline-dark">{{ $item->user_name }}</a> </td>
+                            <td> <a href="{{ 'user/'.$item->user_id.'/info' }}" class="btn btn-outline-dark">{{ $item->user_name }}</a> </td>
                             <td> {{ $item->created_at->format('d/m/Y H:i') }} </td>
                             @if ($user->role == 2)
                                 <td>

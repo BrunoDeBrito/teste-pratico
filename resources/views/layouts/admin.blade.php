@@ -46,7 +46,8 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            <li><a class="nav-link" href="{{ route('login') }}">{{ trans('auth.login') }}</a></li>
+                            <li><a class="nav-link" href="{{ route('login') }}">{{ trans('login') }}</a></li>
+                            <li><a class="nav-link" href="{{ route('register') }}">{{ trans('register') }}</a></li>
                         @else
                             <div class="dropdown">
                                 <button class="btn btn-outline-info dropdown-toggle" type="button"

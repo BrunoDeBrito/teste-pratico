@@ -42,7 +42,6 @@
                         <!-- Authentication Links -->
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{trans('login') }}</a></li>
-                            <li><a class="nav-link" href="{{ route('register') }}">{{ trans('register') }}</a></li>
                         @else
 
                         <div class="dropdown">
